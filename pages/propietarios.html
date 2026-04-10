@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propietarios - Sistema de Aerolíneas</title>
+    
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Iconos Bootstrap  -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <!--  CSS -->
+    <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+    <!-- Nav -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="../index.html">
+                <i class="bi bi-airplane-fill me-2"></i>
+                Sistema de Aerolíneas
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html">
+                            <i class="bi bi-house-fill me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="aerolineas.html">
+                            <i class="bi bi-building me-1"></i>Aerolíneas
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="aviones.html">
+                            <i class="bi bi-airplane me-1"></i>Aviones
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="propietarios.html">
+                            <i class="bi bi-person-fill me-1"></i>Propietarios
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main -->
+    <div class="container mt-4">
+        <!--Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1 class="h3 mb-2">
+                            <i class="bi bi-person-fill me-2"></i>
+                            Gestión de Propietarios
+                        </h1>
+                        <p class="text-muted mb-0">Administrar propietarios y sus aviones</p>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <!-- Buscar y Filtrar -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-search"></i>
+                    </span>
+                    <input type="text" class="form-control" id="searchInput" placeholder="Buscar por nombre o identificación...">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <select class="form-select" id="estadoFilter">
+                    <option value="">Todos los estados</option>
+                    <option value="true">Activos</option>
+                    <option value="false">Inactivos</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-outline-secondary w-100" onclick="resetFilters()">
+                    <i class="bi bi-arrow-clockwise me-2"></i>
+                    Limpiar Filtros
+                </button>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <h5 class="card-title">Total Aviones</h5>
+                <h2 class="mb-0" id="totalAviones">0</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <h5 class="card-title">Aviones Activos</h5>
+                <h2 class="mb-0" id="avionesActivos">0</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-danger text-white">
+            <div class="card-body">
+                <h5 class="card-title">Aviones Inactivos</h5>
+                <h2 class="mb-0" id="avionesInactivos">0</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <!-- Propietarios Table -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="bi bi-person-fill me-2"></i>
+                    Lista de Propietarios
+                </h5>
+                <small class="text-muted">Información de todos los propietarios registrados</small>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Identificación</th>
+                                <th>Nombre</th>
+                                <th>Teléfono</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="propietariosTableBody">
+                            <tr>
+                                <td colspan="5" class="text-center">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Cargando...</span>
+                                    </div>
+                                    <p class="mt-2 text-muted">Cargando propietarios...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aviones por Propietario Table -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="bi bi-airplane-fill me-2"></i>
+                    Aviones con Aerolínea Asociada
+                </h5>
+                <small class="text-muted">Lista de todos los aviones con su propietario y aerolínea actual</small>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID Propietario</th>
+                                <th>Nombre Propietario</th>
+                                <th>Nombre Avión</th>
+                                <th>Modelo</th>
+                                <th>Matrícula</th>
+                                <th>Capacidad</th>
+                                <th>Aerolínea Actual</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="avionesTableBody">
+                            <tr>
+                                <td colspan="9" class="text-center">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Cargando...</span>
+                                    </div>
+                                    <p class="mt-2 text-muted">Cargando aviones...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+       
+
+   
+    
+
+    <!-- Cambiar Propietario Modal -->
+    <div class="modal fade" id="changeOwnerModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-arrow-left-right me-2"></i>Cambiar Aerolínea</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="changeOwnerForm">
+                    <input type="hidden" id="avionIdToChange">
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle me-2"></i>
+                        <strong>Avión:</strong> <span id="avionNombreInfo"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Nueva Aerolínea *</label>
+                        <select class="form-select" id="nuevaAerolinea" required>
+                            <option value="">Seleccione una aerolínea</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="changeOwner()">
+                    <i class="bi bi-arrow-left-right me-2"></i>Transferir
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Footer -->
+    <footer class="bg-light mt-5 py-3">
+        <div class="container text-center">
+            <p class="mb-0 text-muted">&copy; 2024 Sistema de Aerolíneas. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap  -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/propietarios.js"></script>
+</body>
+</html>
+
